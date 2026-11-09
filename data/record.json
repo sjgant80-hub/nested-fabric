@@ -1,0 +1,181 @@
+{
+ "record": {
+  "digits": 2000,
+  "scenarios": {
+   "iso": {
+    "survivors": 12,
+    "right": 13629,
+    "cells": 24000,
+    "accuracy": 0.567875,
+    "perNode": [
+     1087,
+     1103,
+     1153,
+     1154,
+     1134,
+     1154,
+     1157,
+     1145,
+     1164,
+     1077,
+     1138,
+     1163
+    ]
+   },
+   "fab": {
+    "survivors": 12,
+    "right": 14042,
+    "cells": 24000,
+    "accuracy": 0.585083,
+    "perNode": [
+     1113,
+     1201,
+     1216,
+     1216,
+     1167,
+     1157,
+     1197,
+     1189,
+     1167,
+     1140,
+     1140,
+     1139
+    ]
+   },
+   "n25": {
+    "survivors": 9,
+    "right": 10608,
+    "cells": 18000,
+    "accuracy": 0.589333,
+    "perNode": [
+     1151,
+     1201,
+     1216,
+     1216,
+     1167,
+     1151,
+     1168,
+     1175,
+     1163
+    ]
+   },
+   "n50": {
+    "survivors": 6,
+    "right": 6980,
+    "cells": 12000,
+    "accuracy": 0.581667,
+    "perNode": [
+     1175,
+     1154,
+     1157,
+     1151,
+     1168,
+     1175
+    ]
+   },
+   "l30": {
+    "survivors": 12,
+    "right": 14173,
+    "cells": 24000,
+    "accuracy": 0.590542,
+    "perNode": [
+     1167,
+     1201,
+     1216,
+     1216,
+     1167,
+     1167,
+     1167,
+     1189,
+     1167,
+     1166,
+     1175,
+     1175
+    ]
+   }
+  },
+  "lowN1": 0.013167,
+  "hash": "332c6a68a841736e4c45486bea4715f6bc8954c1438c31bfa5aa0d152bf073ac"
+ },
+ "verdicts": [
+  {
+   "id": "N1",
+   "what": "the fabric beats isolation: 95% lower bound of the per-digit mean correctness",
+   "measured": 0.013167,
+   "bar": "above 0",
+   "pass": true
+  },
+  {
+   "id": "N2",
+   "what": "points lost by the survivors when 3 and when 6 of 12 nodes are lost",
+   "measured": [
+    -0.425,
+    0.3416
+   ],
+   "bar": "at most 2.0 and at most 5.0",
+   "pass": true
+  },
+  {
+   "id": "N3",
+   "what": "points lost when 30% of messages are dropped",
+   "measured": -0.5459,
+   "bar": "at most 2.0",
+   "pass": true
+  },
+  {
+   "id": "N4",
+   "what": "every adoption earned, every rogue refused, the lost silent: in every scenario",
+   "measured": {
+    "iso": "0 adopted, 0 rogue",
+    "fab": "54 adopted, 48 rogue",
+    "n25": "29 adopted, 39 rogue",
+    "n50": "20 adopted, 30 rogue",
+    "l30": "34 adopted, 38 rogue"
+   },
+   "bar": "all true",
+   "pass": true
+  }
+ ],
+ "audits": {
+  "iso": {
+   "adoptions": 0,
+   "earned": true,
+   "rogues": 0,
+   "rogueRefused": true,
+   "silent": true,
+   "nodes": 12
+  },
+  "fab": {
+   "adoptions": 54,
+   "earned": true,
+   "rogues": 48,
+   "rogueRefused": true,
+   "silent": true,
+   "nodes": 12
+  },
+  "n25": {
+   "adoptions": 29,
+   "earned": true,
+   "rogues": 39,
+   "rogueRefused": true,
+   "silent": true,
+   "nodes": 12
+  },
+  "n50": {
+   "adoptions": 20,
+   "earned": true,
+   "rogues": 30,
+   "rogueRefused": true,
+   "silent": true,
+   "nodes": 12
+  },
+  "l30": {
+   "adoptions": 34,
+   "earned": true,
+   "rogues": 38,
+   "rogueRefused": true,
+   "silent": true,
+   "nodes": 12
+  }
+ }
+}
