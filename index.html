@@ -93,7 +93,7 @@ footer p+p{margin-top:6px}
 </section>
 <section id="rerun">
   <h2>Re-run it in your browser</h2>
-  <p>Your tab reads the first 2,000 test digits with every surviving node of every scenario and hashes the record. The 12-node simulation itself takes about 40 minutes on a laptop, so it is re-run on GitHub's runner (<code>node tools/fabric.mjs --check</code>) rather than in your tab. Nothing is sent anywhere.</p>
+  <p>Your tab reads the first 2,000 test digits with every surviving node of every scenario and hashes the record. That is about a hundred thousand settles, so it takes a few minutes. The 12-node simulation itself takes about 40 minutes on a laptop, so it is re-run on GitHub's runner (<code>node tools/fabric.mjs --check</code>) rather than in your tab. Nothing is sent anywhere.</p>
   <div class="controls"><button id="go">Re-read the test digits</button><span id="gostatus" class="muted"></span></div>
   <div class="tablewrap"><table id="proof" hidden><thead><tr><th>Number</th><th>Your tab</th><th>The record</th><th></th></tr></thead><tbody></tbody></table></div>
 </section>
@@ -116,6 +116,11 @@ footer p+p{margin-top:6px}
       <g fill="none" stroke="currentColor" stroke-width="1.4" style="color:var(--muted)">
         <rect x="20" y="40" width="250" height="140" rx="14"/><rect x="325" y="40" width="250" height="140" rx="14"/><rect x="630" y="40" width="250" height="140" rx="14"/>
         <path d="M270 110H325M575 110H630" style="color:var(--accent)" stroke="currentColor" stroke-dasharray="5 4"/>
+      </g>
+      <g fill="none" stroke-width="1.4" style="color:var(--accent)" stroke="currentColor">
+        <path d="M80 80H200M80 145H200M80 80V145M200 80V145M80 80L200 145M200 80L80 145"/>
+        <path d="M385 80H505M385 145H505M385 80V145M505 80V145M385 80L505 145M505 80L385 145"/>
+        <path d="M690 80H810M690 145H810M690 80V145M810 80V145M690 80L810 145M810 80L690 145"/>
       </g>
       <g fill="currentColor" style="color:var(--accent)">
         <circle cx="80" cy="80" r="14"/><circle cx="200" cy="80" r="14"/><circle cx="80" cy="145" r="14"/><circle cx="200" cy="145" r="14"/>
