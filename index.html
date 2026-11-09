@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Nested fabric · twelve nodes, sharing</title>
+<meta name="description" content="Rung 6 of the geometric ladder: twelve settling-cell nodes in three clusters share signed shapes locally and widely, each tested on the receiver's own exam, under node and link loss. Every failure published.">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; worker-src 'self'; base-uri 'none'; form-action 'none'">
+<style>
+:root{--bg:#f7f5f0;--panel:#ffffff;--ink:#1d1c1a;--muted:#6b665c;--line:rgba(29,28,26,.12);--accent:#3f6b47;--accent-dim:rgba(63,107,71,.10);--win:#2f7a3d;--tie:#a5701c;--bad:#b3452c;--px0:#ffffff;--px1:#1d1c1a;--mono:'JetBrains Mono','IBM Plex Mono',ui-monospace,monospace;--sans:'Inter',-apple-system,system-ui,sans-serif;--serif:'Cormorant Garamond','Iowan Old Style',Georgia,serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1a1a1e;--panel:#212127;--ink:#e8e4db;--muted:#928d80;--line:rgba(232,228,219,.12);--accent:#7a9c7e;--accent-dim:rgba(122,156,126,.14);--win:#7acc85;--tie:#d4a052;--bad:#d67a5a;--px0:#212127;--px1:#e8e4db}}
+:root[data-theme="dark"]{--bg:#1a1a1e;--panel:#212127;--ink:#e8e4db;--muted:#928d80;--line:rgba(232,228,219,.12);--accent:#7a9c7e;--accent-dim:rgba(122,156,126,.14);--win:#7acc85;--tie:#d4a052;--bad:#d67a5a;--px0:#212127;--px1:#e8e4db}
+*{box-sizing:border-box;margin:0;padding:0}
+[hidden]{display:none !important}
+html,body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:var(--accent)}
+main{max-width:1040px;margin:0 auto;padding:0 16px 64px}
+nav.top{position:sticky;top:0;z-index:3;background:var(--bg);border-bottom:1px solid var(--line);display:flex;gap:14px;flex-wrap:wrap;padding:8px 16px;font-family:var(--mono);font-size:12px}
+nav.top a{color:var(--muted);text-decoration:none} nav.top a:hover{color:var(--accent)}
+header.hero{max-width:1040px;margin:0 auto;padding:36px 16px 10px}
+h1{font-family:var(--serif);font-size:clamp(34px,6vw,58px);line-height:1.05;font-weight:600}
+.lede{font-size:19px;color:var(--muted);max-width:780px;margin-top:10px}
+.verdictline{font-size:17px;margin-top:12px;max-width:780px}
+section{margin-top:40px}
+h2{font-family:var(--serif);font-size:30px;font-weight:600;margin-bottom:8px}
+h3{font-size:16px;margin:16px 0 6px}
+p+p{margin-top:8px} ul,ol{padding-left:22px} li{margin:4px 0}
+.muted{color:var(--muted)}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;margin-top:12px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+.card .k{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.card .big{font-size:26px;font-weight:600;margin:6px 0 2px;font-variant-numeric:tabular-nums}
+.card .vs{font-size:14px;color:var(--muted)}
+.chip{display:inline-block;font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:.06em;padding:2px 10px;border-radius:12px;white-space:nowrap}
+.chip.win{background:color-mix(in srgb,var(--win) 15%,transparent);color:var(--win)} .chip.bad{background:color-mix(in srgb,var(--bad) 15%,transparent);color:var(--bad)}
+.bar{height:10px;border-radius:5px;background:var(--line);margin:3px 0;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--accent);transition:width .08s linear} .bar.m i{background:var(--muted)}
+button{font:inherit;font-size:15px;color:#fff;background:var(--accent);border:0;border-radius:6px;padding:9px 16px;cursor:pointer}
+button.ghost{background:transparent;color:var(--accent);border:1px solid var(--accent)}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--tie);outline-offset:2px}
+button:disabled{opacity:.55;cursor:progress}
+select{font:inherit;font-size:14px;background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:4px;padding:6px 8px}
+table{border-collapse:collapse;width:100%;font-size:14.5px;margin-top:10px}
+td,th{border-bottom:1px solid var(--line);padding:7px 8px;text-align:left;vertical-align:top}
+th{font-family:var(--mono);font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.07em}
+td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+.tablewrap{overflow-x:auto}
+.ok{color:var(--win);font-weight:600} .no{color:var(--bad);font-weight:600}
+.svgwrap{overflow-x:auto;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px;margin-top:10px}
+.svgwrap svg{display:block;min-width:680px;width:100%;height:auto}
+code{font-family:var(--mono);font-size:.88em;background:var(--accent-dim);padding:1px 5px;border-radius:3px}
+.controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:10px 0}
+.controls label{display:flex;gap:6px;align-items:center;font-size:14px;color:var(--muted)}
+.controls input{width:90px;font:inherit;font-size:14px;background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:4px;padding:4px 6px}
+.stage{display:grid;grid-template-columns:minmax(200px,280px) 1fr;gap:18px;align-items:start;margin-top:10px}
+.stage canvas{width:100%;height:auto;aspect-ratio:1;border:1px solid var(--line);border-radius:8px;background:var(--px0);image-rendering:pixelated}
+.fits{display:grid;grid-template-columns:22px minmax(0,1fr) auto;gap:2px 8px;align-items:center;font-family:var(--mono);font-size:12.5px}
+.fits .bar{margin:0}
+.fits .win i{background:var(--win)}
+.readout{font-size:15px;margin-top:8px}
+.memories{display:grid;grid-template-columns:repeat(auto-fill,minmax(44px,1fr));gap:6px;margin-top:10px}
+.memories figure{text-align:center;font-family:var(--mono);font-size:10.5px;color:var(--muted)}
+.memories canvas{width:100%;height:auto;aspect-ratio:1;border:1px solid var(--line);border-radius:4px;image-rendering:pixelated;background:var(--px0)}
+.timeline{list-style:none;padding:0;border-left:2px solid var(--accent);margin-top:10px}
+.timeline li{padding:4px 0 8px 14px;position:relative}
+.timeline li::before{content:'';position:absolute;left:-6px;top:12px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.timeline b{font-family:var(--mono);font-size:12.5px}
+footer{max-width:1040px;margin:0 auto;padding:22px 16px 40px;border-top:1px solid var(--line);color:var(--muted);font-size:13.5px}
+footer p+p{margin-top:6px}
+@media (max-width:640px){.stage{grid-template-columns:1fr}.stage canvas{max-width:260px}td,th{padding:6px 5px;font-size:13.5px}}
+</style>
+</head>
+<body>
+<nav class="top" aria-label="Sections">
+  <a href="#result">The result</a><a href="#scenarios">The five scenarios</a><a href="#rerun">Re-run it</a><a href="#start">Start here</a><a href="#how">How it works</a><a href="#blueprint">Blueprint</a><a href="#adoption">Adoption</a><a href="#paper">White paper</a><a href="#business">For business</a>
+</nav>
+<header class="hero">
+  <h1>Twelve small minds, sharing what works, losing nodes gracefully.</h1>
+  <p class="lede">Twelve settling-cell nodes in three clusters each improve on their own data. Every round they share their shapes inside their cluster, and every other round across clusters, through signed shares that each node tests on its own exam before taking. A rogue tries every round. Then nodes are cut and links dropped, and what is left is judged on handwriting no node trained on.</p>
+  <p class="verdictline" id="verdictline">Loading the record…</p>
+</header>
+<main>
+<section id="result">
+  <h2>The result</h2>
+  <p class="muted">Each claim was written down with its bar before any code (<a href="CLAIMS.md">CLAIMS.md</a>). All five scenarios were frozen by hash before the test digits were read (<a href="SEAL2.md">SEAL2.md</a>). A claim that misses its bar is kept and shown as failed. Every number here is read from the committed record.</p>
+  <div class="tablewrap"><table id="claims"><thead><tr><th>Claim</th><th>What it says</th><th>Measured</th><th>Bar</th><th>Verdict</th></tr></thead><tbody></tbody></table></div>
+  <h3>What the result says</h3>
+  <p id="lesson">…</p>
+</section>
+<section id="scenarios">
+  <h2>The five scenarios</h2>
+  <div class="tablewrap"><table id="sc"><thead><tr><th>Scenario</th><th>What happens</th><th>Nodes left</th><th>Accuracy on the test digits</th><th>Shares adopted</th><th>Rogue shares refused</th></tr></thead><tbody></tbody></table></div>
+</section>
+<section id="rerun">
+  <h2>Re-run it in your browser</h2>
+  <p>Your tab reads the first 2,000 test digits with every surviving node of every scenario and hashes the record. The 12-node simulation itself takes about 40 minutes on a laptop, so it is re-run on GitHub's runner (<code>node tools/fabric.mjs --check</code>) rather than in your tab. Nothing is sent anywhere.</p>
+  <div class="controls"><button id="go">Re-read the test digits</button><span id="gostatus" class="muted"></span></div>
+  <div class="tablewrap"><table id="proof" hidden><thead><tr><th>Number</th><th>Your tab</th><th>The record</th><th></th></tr></thead><tbody></tbody></table></div>
+</section>
+<section id="what">
+  <h2>What this is</h2>
+  <p>This is Rung 6 of a ladder toward computing by geometry instead of by large models. Rung 4 showed one node can safely improve another. Rung 6 asks what happens with many: does a fabric of small nodes, sharing locally and widely, beat the same nodes working alone, and does it keep working when nodes die and messages are lost?</p>
+</section>
+<section id="start">
+  <h2>Start here</h2>
+  <ol>
+    <li>Read <a href="#result">The result</a> and <a href="#scenarios">The five scenarios</a>.</li>
+    <li>Press <b>Re-read the test digits</b> to check the record's hash in your tab.</li>
+    <li>Off the page: clone the repo and run <code>node --test test/*.test.mjs</code>, <code>node tools/fabric.mjs --check</code> and <code>node tools/eval.mjs --check</code>.</li>
+  </ol>
+</section>
+<section id="how">
+  <h2>How it works</h2>
+  <div class="svgwrap">
+    <svg viewBox="0 0 900 230" role="img" aria-label="Three clusters of four nodes; shares flow inside each cluster every round and between cluster gateways every other round">
+      <g fill="none" stroke="currentColor" stroke-width="1.4" style="color:var(--muted)">
+        <rect x="20" y="40" width="250" height="140" rx="14"/><rect x="325" y="40" width="250" height="140" rx="14"/><rect x="630" y="40" width="250" height="140" rx="14"/>
+        <path d="M270 110H325M575 110H630" style="color:var(--accent)" stroke="currentColor" stroke-dasharray="5 4"/>
+      </g>
+      <g fill="currentColor" style="color:var(--accent)">
+        <circle cx="80" cy="80" r="14"/><circle cx="200" cy="80" r="14"/><circle cx="80" cy="145" r="14"/><circle cx="200" cy="145" r="14"/>
+        <circle cx="385" cy="80" r="14"/><circle cx="505" cy="80" r="14"/><circle cx="385" cy="145" r="14"/><circle cx="505" cy="145" r="14"/>
+        <circle cx="690" cy="80" r="14"/><circle cx="810" cy="80" r="14"/><circle cx="690" cy="145" r="14"/><circle cx="810" cy="145" r="14"/>
+      </g>
+      <g font-family="ui-monospace,monospace" font-size="13" fill="currentColor" style="color:var(--ink)">
+        <text x="95" y="30">cluster 1</text><text x="400" y="30">cluster 2</text><text x="705" y="30">cluster 3</text>
+        <text x="20" y="215" style="fill:var(--muted)">solid: shares inside a cluster every round · dashed: gateways share across clusters in rounds 2 and 4</text>
+      </g>
+    </svg>
+  </div>
+  <ol>
+    <li><b>Improve.</b> Each round, every live node runs Rung 2's model-free loop for 15 cycles on its own 2,500 training digits.</li>
+    <li><b>Share locally.</b> Each node signs its shape and sends it to its cluster peers.</li>
+    <li><b>Share widely.</b> In rounds 2 and 4, each cluster's gateway sends its shape to the other gateways.</li>
+    <li><b>Check before taking.</b> Every share goes through Rung 4's receive: key on the roster, signature on the raw bytes, a cell that builds, and a win on the receiver's own fresh exam.</li>
+    <li><b>Lose things.</b> In n25 and n50, 3 or 6 nodes go silent after round 1; in l30, each message is dropped with 30% chance.</li>
+  </ol>
+</section>
+<section id="blueprint">
+  <h2>Blueprint</h2>
+  <div class="cards" id="parts"></div>
+  <ul class="timeline" id="timeline"></ul>
+</section>
+<section id="adoption">
+  <h2>Adoption</h2>
+  <div class="cards">
+    <div class="card"><div class="k">For a business</div><p style="margin-top:6px">Many small sites or devices can learn from each other without a centre, and keep working when some go dark. Each still decides for itself what to take.</p></div>
+    <div class="card"><div class="k">For engineering</div><p style="margin-top:6px">Local-first gossip with signed shares and a local acceptance test; seeded loss and drops; every event in a log that re-derives byte for byte.</p></div>
+    <div class="card"><div class="k">For risk and procurement</div><p style="margin-top:6px">A sender on no roster is refused before its bytes are parsed; a lost node can neither send nor receive; nothing leaves the fabric.</p></div>
+  </div>
+</section>
+<section id="paper">
+  <h2>White paper: a fabric of settling cells</h2>
+  <p><b>The question.</b> Does sharing proven shapes across a fabric of small model-free nodes beat isolation, and how much does it lose when nodes and links fail?</p>
+  <p><b>The method.</b> 12 nodes on disjoint MNIST training shards, 4 rounds of local improvement and sharing, five sealed scenarios, every share through Rung 4's receive. The final shapes were frozen by hash; then every surviving node read the first 2,000 test digits once.</p>
+  <p><b>The results, from the record:</b></p>
+  <ul id="results"></ul>
+  <p><b>The limits, plainly:</b></p>
+  <ul>
+    <li>A simulation in one process, not a deployment over real networks.</li>
+    <li>The test digits were read before by Rungs 3–5, for other claims.</li>
+    <li>The nodes are weak: each improved for only 60 cycles from Rung 1's cell. The claims are about what sharing adds and what survives loss, not about how well a node reads.</li>
+    <li>Shares replace shapes; nodes do not merge them. Not on a chip (Rung 7).</li>
+  </ul>
+</section>
+<section id="business">
+  <h2>For business</h2>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Who</th><th>What this means for them</th></tr></thead>
+    <tr><td>CEO</td><td>Many small systems that improve together and survive losses, with no central model and no vendor in the middle.</td></tr>
+    <tr><td>Finance</td><td>No central training bill and no per-call fee. The cost case below uses your own numbers.</td></tr>
+    <tr><td>Operations</td><td>Sites keep running when others go dark; a bad or rogue update cannot spread on trust.</td></tr>
+    <tr><td>CTO / CISO</td><td>Signed shares checked on raw bytes; a local exam before any change; a full, re-derivable event log.</td></tr>
+  </table></div>
+  <h3>The cost case for one process</h3>
+  <p class="muted">Your numbers in; sourced figures for the rest, each source listed. These are your costs. No price of ours appears. The starting values are an example process. Put in your own.</p>
+  <div class="controls">
+    <label>hours a week <input id="c-hours" type="number" min="0" max="168" value="20"></label>
+    <label>share taken off % <input id="c-share" type="number" min="0" max="100" value="50"></label>
+    <label>people <input id="c-seats" type="number" min="0" value="5"></label>
+    <label>cases a week <input id="c-cases" type="number" min="0" value="500"></label>
+    <label>years <input id="c-years" type="number" min="1" max="10" value="3"></label>
+  </div>
+  <p id="c-head" style="font-size:17px">…</p>
+  <div class="tablewrap"><table id="c-table"><thead><tr><th>Route</th><th>What it means</th><th>A year</th><th id="c-overh">Over the years</th></tr></thead><tbody></tbody></table></div>
+  <p id="c-note" class="muted" style="margin-top:8px"></p>
+  <h3>The case for the board</h3>
+  <p id="c-board"></p>
+  <h3>Questions buyers ask</h3>
+  <div class="tablewrap"><table>
+    <tr><td><b>What happens when sites go offline?</b></td><td id="faq-loss">Loading…</td></tr>
+    <tr><td><b>Can one bad site poison the rest?</b></td><td id="faq-rogue">Loading…</td></tr>
+    <tr><td><b>How would we test it on our own sites?</b></td><td>Seal the bars, run the fabric on your sites' own data, freeze, and judge once on held-out data. The fee is due only if it beat your current way.</td></tr>
+    <tr><td><b>What failed?</b></td><td id="faq-failed">Loading…</td></tr>
+    <tr><td><b>Who has done this for a client? Is it certified?</b></td><td>No client case study is published yet, and no certification is claimed. The record re-derives from pinned files, on GitHub's runner and in your browser.</td></tr>
+  </table></div>
+  <p style="margin-top:10px">Supplied by <a href="https://www.ai-nativesolutions.com" rel="noopener">AI Native Solutions</a>; contact through that site. Support, SLA, warranty and liability are agreed per deployment. The code is MIT. The rungs below: <a href="https://sjgant80-hub.github.io/settling-cell/">1</a>, <a href="https://sjgant80-hub.github.io/code-rsi/">2</a>, <a href="https://sjgant80-hub.github.io/hybrid-gate/">3</a>, <a href="https://sjgant80-hub.github.io/mesh-share/">4</a>, <a href="https://sjgant80-hub.github.io/geometric-defence/">5</a>.</p>
+  <p class="muted" style="margin-top:8px">Sources, as read into the cost basis:</p>
+  <ul id="c-src" class="muted" style="font-size:13px"></ul>
+</section>
+</main>
+<footer>
+  <p>Data: the MNIST database of handwritten digits, Y. LeCun, C. Cortes and C. J. C. Burges, CC BY-SA 3.0; pinned by SHA-256.</p>
+  <p>Built on Rung 4's exchange and everything it vendors (Rungs 1–3 and the estate's Ed25519 keys), byte for byte. The cell's energy follows Hopfield (1982) and Krotov &amp; Hopfield (2016).</p>
+  <p>Powered by the Konomi architecture, created by Thomas Frumkin.</p>
+  <p>MIT licence for the code; the MNIST files keep their CC BY-SA 3.0 licence · <a href="https://github.com/sjgant80-hub/nested-fabric">source</a> · Rung 6 of the geometric ladder.</p>
+</footer>
+<script type="module" src="app.mjs"></script>
+</body>
+</html>
