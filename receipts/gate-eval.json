@@ -1,0 +1,9 @@
+{
+ "kernel": "src/eval.mjs",
+ "witness": "v0.6",
+ "total": 7,
+ "killed": 7,
+ "survived": 0,
+ "ignored": 0,
+ "clean": true
+}
