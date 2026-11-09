@@ -26,6 +26,13 @@ test('seal 2 names every scenario\'s shapes and log', () => {
   const seal = read('SEAL2.md');
   for (const n of NAMES) for (const f of ['data/shapes-' + n + '.txt', 'data/fabric-' + n + '.json']) assert.ok(seal.includes(sha(f)), f);
 });
+test('seal 2\'s code hashes: the committed code is the sealed code (src/fabric.mjs sealed with CRLF line endings, SEAL2-NOTE.md)', () => {
+  const seal = read('SEAL2.md'), note = read('SEAL2-NOTE.md'), h = (s) => createHash('sha256').update(Buffer.from(s, 'utf8')).digest('hex');
+  const lf = (p) => read(p).replace(/\r\n/g, '\n');
+  assert.ok(seal.includes(h(lf('src/fabric.mjs').replace(/\n/g, '\r\n'))), 'src/fabric.mjs with CRLF endings is exactly the sealed hash');
+  assert.ok(note.includes(h(lf('src/fabric.mjs'))), 'and the note names its LF hash');
+  assert.ok(seal.includes(h(lf('src/eval.mjs'))), 'src/eval.mjs is the sealed hash as stored');
+});
 test('N6: no measured number is typed into the page', () => {
   const r = JSON.parse(read('data/record.json')).record, forms = new Set();
   for (const k of NAMES) { const a = r.scenarios[k].accuracy; forms.add((a * 100).toFixed(1) + '%'); forms.add((a * 100).toFixed(2) + '%'); }
