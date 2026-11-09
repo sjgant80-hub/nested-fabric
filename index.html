@@ -72,7 +72,7 @@ footer p+p{margin-top:6px}
 </head>
 <body>
 <nav class="top" aria-label="Sections">
-  <a href="#result">The result</a><a href="#scenarios">The five scenarios</a><a href="#rerun">Re-run it</a><a href="#start">Start here</a><a href="#how">How it works</a><a href="#blueprint">Blueprint</a><a href="#adoption">Adoption</a><a href="#paper">White paper</a><a href="#business">For business</a>
+  <a href="#result">The result</a><a href="#scenarios">The five scenarios</a><a href="#rerun">Re-run it</a><a href="#words">Words</a><a href="#start">Start here</a><a href="#how">How it works</a><a href="#blueprint">Blueprint</a><a href="#adoption">Adoption</a><a href="#paper">White paper</a><a href="#business">For business</a>
 </nav>
 <header class="hero">
   <h1>Twelve small minds, sharing what works, losing nodes gracefully.</h1>
@@ -100,6 +100,22 @@ footer p+p{margin-top:6px}
 <section id="what">
   <h2>What this is</h2>
   <p>This is Rung 6 of a ladder toward computing by geometry instead of by large models. Rung 4 showed one node can safely improve another. Rung 6 asks what happens with many: does a fabric of small nodes, sharing locally and widely, beat the same nodes working alone, and does it keep working when nodes die and messages are lost?</p>
+</section>
+<section id="words">
+  <h2>Words on this page</h2>
+  <div class="tablewrap"><table>
+    <tr><td><b>Node</b></td><td>One small program that reads handwritten digits. Here there are twelve, each with its own digits to learn from.</td></tr>
+    <tr><td><b>Shape</b></td><td>What a node reads with: two hundred stored digit patterns, plus two numbers that set how widely each pattern pulls. About 13 KB of text.</td></tr>
+    <tr><td><b>Settle</b></td><td>How a node reads a digit: it flips the digit's bits one at a time towards its stored patterns until nothing more changes. The class of the patterns it ends up nearest is the answer.</td></tr>
+    <tr><td><b>Improve</b></td><td>Code proposes a small change to the shape and keeps it only if it wins on a fresh batch of the node's own digits. No model is trained (Rung 2).</td></tr>
+    <tr><td><b>Share, signed</b></td><td>A node sends its shape to another, signed with its own Ed25519 key, so the receiver can check who sent it and that not one byte changed.</td></tr>
+    <tr><td><b>Roster</b></td><td>The list of keys a node will listen to: the twelve nodes.</td></tr>
+    <tr><td><b>Exam</b></td><td>Before taking a share, the receiver reads a fresh batch of its own digits with both shapes, and takes the new one only if it gets at least two more of them right.</td></tr>
+    <tr><td><b>Rogue</b></td><td>A thirteenth sender that signs its messages properly but is on no roster. Only the roster stops it.</td></tr>
+    <tr><td><b>Cluster, gateway</b></td><td>Four nodes that share with each other every round; the lowest-numbered live one is the cluster's gateway, which shares with the other clusters every second round.</td></tr>
+    <tr><td><b>Seal</b></td><td>Committing the claims (seal 1), then the frozen results (seal 2), to the public record before the test digits are read, so nothing can be tuned after the fact.</td></tr>
+    <tr><td><b>Mutation gate</b></td><td>A tool (witness) that breaks the code in small ways, one at a time, and checks the tests catch every break. Clean means every one was caught.</td></tr>
+  </table></div>
 </section>
 <section id="start">
   <h2>Start here</h2>
@@ -151,8 +167,18 @@ footer p+p{margin-top:6px}
   <div class="cards">
     <div class="card"><div class="k">For a business</div><p style="margin-top:6px">Many small sites or devices can learn from each other without a centre, and keep working when some go dark. Each still decides for itself what to take.</p></div>
     <div class="card"><div class="k">For engineering</div><p style="margin-top:6px">Local-first gossip with signed shares and a local acceptance test; seeded loss and drops; every event in a log that re-derives byte for byte.</p></div>
-    <div class="card"><div class="k">For risk and procurement</div><p style="margin-top:6px">A sender on no roster is refused before its bytes are parsed; a lost node can neither send nor receive; nothing leaves the fabric.</p></div>
+    <div class="card"><div class="k">For risk and procurement</div><p style="margin-top:6px">A sender on no roster is refused before its bytes are parsed; a lost node can neither send nor receive. In this simulation nothing is sent outside the twelve nodes; a real deployment needs its own network design.</p></div>
   </div>
+  <h3>A pilot, step by step</h3>
+  <ol>
+    <li>Pick one task every site does, with a right answer you can check later.</li>
+    <li>Write down the bars it must meet before anything is built, and seal them.</li>
+    <li>Give each site a key, and put every site's key on one roster.</li>
+    <li>Run the fabric on each site's past data, offline, with the losses you expect: sites down, links dropping.</li>
+    <li>Freeze it, then judge it once on data it never saw. The fee is due only if it beat your current way.</li>
+    <li>Then run it beside your current process, deciding nothing, before it is trusted with anything.</li>
+  </ol>
+  <p class="muted">What it runs on: Node.js 20 or a current browser. No GPU, no cloud service, no model download.</p>
 </section>
 <section id="paper">
   <h2>White paper: a fabric of settling cells</h2>
@@ -165,7 +191,7 @@ footer p+p{margin-top:6px}
     <li>A simulation in one process, not a deployment over real networks.</li>
     <li>The test digits were read before by Rungs 3–5, for other claims.</li>
     <li>The nodes are weak: each improved for only 60 cycles from Rung 1's cell. The claims are about what sharing adds and what survives loss, not about how well a node reads.</li>
-    <li>Shares replace shapes; nodes do not merge them. Not on a chip (Rung 7).</li>
+    <li>A share replaces a node's whole shape; nodes never merge two shapes. Not on a chip (that is Rung 7).</li>
   </ul>
 </section>
 <section id="business">
